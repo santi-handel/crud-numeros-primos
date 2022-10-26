@@ -7,7 +7,7 @@ export default function FirebaseContext(props) {
     //crear objeto que hereda los props
     const { children } = props
     const [nums, setNums] = useState([]);
-    const [divisores, setDivisores] = useState("")
+    const [divisores, setDivisores] = useState([])
 
 
     const idIncremental = async () => {
@@ -30,15 +30,26 @@ export default function FirebaseContext(props) {
         setNums(lstNums);
     }
 
+    const comentary = () => {
+        let text = ""
+        divisores.forEach(i => {
+            text += i + ", "
+        })
+        console.log(text)
+        return text
+    }
+
     const isPrime = (num) => {
         let count = 0;
+        let lstDivisores = []
         for (let i = 1; i <= num; i++) {
             if (num % i === 0) {
                 count += 1;
-                setDivisores(divisores , " , " , i.toString())
+                lstDivisores.push(i)
             }
         }
-
+        setDivisores(lstDivisores)
+        console.log(divisores);
         return count === 2;
     }
 
@@ -49,10 +60,9 @@ export default function FirebaseContext(props) {
         await setDoc(doc(db, "nums", (await idIncremental()).toString()), {
             numero: num,
             isPrime: isPrime(parseInt(num)).toString(),
-            comentario: divisores
+            comentario: comentary()
         })
-        console.log(divisores);
-        setDivisores("")
+        setDivisores([])
     }
 
     const updateNum = async (id, num) => {
