@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { db } from "../services/firebase"
+import  db  from "../services/Firebase"
 import numContext from "./context"
 import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc } from "firebase/firestore"
 
@@ -8,11 +8,23 @@ export default function FirebaseContext(props) {
     const { children } = props
     const [nums, setNums] = useState([]);
 
+    
+    const idIncremental = async () =>{
+        let count = -1;
+        const snap = await getDocs(collection(db,"nums"))
+        snap.forEach((i)=>{
+            if(parseInt(i.id)>count){
+                count=parseInt(i.id)
+            }
+        })
+        return count+1
+    }
+
     const getNums = async () => {
-        const lstNums = [];
         const snap = await getDocs(collection(db, "nums"))
+        const lstNums = [];
         snap.forEach((i) => {
-            lstNums.push({ ...i.data(), id: id.id })
+            lstNums.push({ ...i.data(), id: i.id })
         })
         setNums(lstNums);
     }
@@ -22,7 +34,7 @@ export default function FirebaseContext(props) {
         for (let i = 2; i = num; i++) {
             if (num % i === 0) {
                 lstDivisores.push(i);
-                console.log(lstDivisores);
+                //console.log(lstDivisores);
                 return false;
             }
             if (num % i !== 0) {
@@ -30,12 +42,12 @@ export default function FirebaseContext(props) {
             }
         }
     }
+
     const addNum = async (num) => {
-        await setDoc(doc(db, "nums"), {
-            id,
+        await setDoc(doc(db, "nums",(await idIncremental()).toString()), {
             numero: num,
-            numeroPrimo: isPrime(parseInt(num)).toString(),
-            comentario: "es divisible por ", lstDivisores 
+            isPrime: isPrime(parseInt(num)).toString(),
+            //comentario: "es divisible por ", lstDivisores
         })
     }
 
