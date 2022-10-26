@@ -6,11 +6,14 @@ export default function Tabla() {
 
     const{getNums,lstNums} = useContext(context)
 
+
     useEffect(() => {
         getNums()
         //eslint-disable-next-line
     }, [])
-    
+    //se puede usar color o backgroundColor
+    const styledRow = [{when:i=>i.isPrime==="true",style:{color:"green"}},{when:i=>i.isPrime==="false",style:{color:"red"}}]
+
     const column = [{
         name:"ID",
         selector:i => i.id,
@@ -37,7 +40,7 @@ export default function Tabla() {
 
     return(
         <>
-            <DataTable className="table-responsive border border-dark"
+            <DataTable conditionalRowStyles={styledRow} className="table-responsive border border-dark"
             columns={column} data={lstNums} title="Numeros" pagination fixedHeader fixedHeaderScrollHeight="200px"
             />
 
