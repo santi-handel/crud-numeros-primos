@@ -2,7 +2,7 @@ import React from 'react'
 import Tabla from '../components/Table'
 import BtnAdd from '../components/BtnAdd'
 import BtnEdit from '../components/BtnEdit'
-import BtnDelete from '../components/BnDelete'
+import BtnDelete from '../components/BtnDelete'
 
 
 export function Home() {
